@@ -1,3 +1,5 @@
+[![Build Status](https://drone.io/github.com/sigma/docker-fake-run/status.png)](https://drone.io/github.com/sigma/docker-fake-run/latest)
+
 Small util to replay docker run. This includes:
 - stdout
 - stderr
