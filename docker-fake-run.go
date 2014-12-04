@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/njern/httpstream"
 )
@@ -59,6 +61,16 @@ func main() {
 	base := os.Args[1]
 	container_logs := base + "/logs"
 	container_wait := base + "/wait"
+	container_kill := base + "/kill"
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c,
+		syscall.SIGINT,
+		syscall.SIGTERM)
+	go func() {
+		<-c
+		http.Post(container_kill, "", nil)
+	}()
 
 	stdout_url := getStreamUrl(container_logs, "stdout")
 	stdout_done := readStream(stdout_url, os.Stdout)
